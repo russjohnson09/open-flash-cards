@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 public class DeckAdapter extends BaseAdapter {
 
-    ArrayList<Deck> decks;
-    Context c;
+    private ArrayList<Deck> decks;
+    private Context c;
 
     public DeckAdapter(Context c, List<Deck> decks) {
 	this.c = c;
@@ -46,6 +46,11 @@ public class DeckAdapter extends BaseAdapter {
 	tv.setText(decks.get(position).toString());
 
 	return tv;
+    }
+
+    public void add(Deck deck) {
+	decks.add(deck);
+	notifyDataSetChanged();
     }
 
 }

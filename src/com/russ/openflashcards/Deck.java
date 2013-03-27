@@ -26,4 +26,9 @@ public class Deck {
 	this.id = id;
     }
 
+    @Override
+    public String toString() {
+	return name;
+    }
+
 }

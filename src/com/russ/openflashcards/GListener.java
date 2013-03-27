@@ -1,9 +1,11 @@
 package com.russ.openflashcards;
 
+import com.russ.openflashcards.activities.CardView;
+import com.russ.openflashcards.activities.ViewCards;
+
 import android.content.Context;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 public class GListener extends SimpleOnGestureListener {
@@ -20,22 +22,36 @@ public class GListener extends SimpleOnGestureListener {
     }
 
     @Override
-    public boolean onFling(MotionEvent event1, MotionEvent event2,
-	    float velocityX, float velocityY) {
-	Log.d(null, "Fling");
-	int dx = (int) (event2.getX() - event1.getX());
-	// don't accept the fling if it's too short
-	// as it may conflict with a button push
-	if (Math.abs(dx) > 1 && Math.abs(velocityX) > Math.abs(velocityY)) {
-	    if (velocityX > 0) {
-		Toast.makeText(c, "L", Toast.LENGTH_SHORT).show();
-	    } else {
-		Toast.makeText(c, "R", Toast.LENGTH_SHORT).show();
-	    }
-	    return true;
-	} else {
-	    return false;
-	}
+    public void onLongPress(MotionEvent e) {
+	// TODO Auto-generated method stub
+	super.onLongPress(e);
     }
 
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+	CardView.answerShown = !CardView.answerShown;
+	return true;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent event1, MotionEvent event2,
+	    float velocityX, float velocityY) {
+	int dx = (int) (event2.getX() - event1.getX());
+	if (Math.abs(dx) > 1 && Math.abs(velocityX) > Math.abs(velocityY)) {
+	    int a = CardView.index;
+	    int b = ViewCards.cards.size();
+	    if (velocityX > 0) {
+		a--;
+		if (a < 0)
+		    CardView.index = b - 1;
+		else
+		    CardView.index = a;
+	    } else {
+		a++;
+		CardView.index = a % b;
+	    }
+	    return true;
+	}
+	return false;
+    }
 }
